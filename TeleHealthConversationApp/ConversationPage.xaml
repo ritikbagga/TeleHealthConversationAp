@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:TeleHealthConversationApp.ViewModels"
+             x:Class="TeleHealthConversationApp.ConversationPage"
+             Shell.NavBarIsVisible="False"
+             BackgroundColor="#F9FAFB">
+
+    <!-- Bind to the ConversationViewModel -->
+    <ContentPage.BindingContext>
+        <viewModels:ConversationViewModel />
+    </ContentPage.BindingContext>
+
+    <Grid RowDefinitions="Auto, *, Auto"
+          ColumnDefinitions="*"
+          Padding="0"
+          BackgroundColor="#F9FAFB">
+
+        <!-- TOP SECTION -->
+        <VerticalStackLayout Grid.Row="0"
+                             Padding="16"
+                             BackgroundColor="White"
+                             Spacing="4"
+                             HorizontalOptions="Center"
+                             VerticalOptions="Start">
+            <Label Text="Call with Jonathon Doe"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   HorizontalOptions="Center" />
+
+            <Label Text="PulseBot is recording call..."
+                   FontSize="12"
+                   TextColor="Red"
+                   HorizontalOptions="Center" />
+        </VerticalStackLayout>
+
+        <!-- LANGUAGE INDICATOR IN CIRCLE -->
+        <Grid Grid.Row="1">
+            <Frame WidthRequest="200"
+                   HeightRequest="80"
+                   CornerRadius="40"
+                   BorderColor="Gray"
+                   BackgroundColor="White"
+                   Padding="0"
+                   HorizontalOptions="Center"
+                   VerticalOptions="Start"
+                   Margin="0,10,0,0">
+                <VerticalStackLayout HorizontalOptions="Center"
+                                     VerticalOptions="Center">
+                    <Label Text="Patient Language"
+                           FontSize="14"
+                           TextColor="Black"
+                           HorizontalOptions="Center"/>
+                    <Label Text="French"
+                           FontSize="16"
+                           FontAttributes="Bold"
+                           TextColor="Black"
+                           HorizontalOptions="Center"/>
+                </VerticalStackLayout>
+            </Frame>
+        </Grid>
+
+        <!-- MESSAGES AREA -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding Messages}"
+                        Margin="16,100,16,0">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <VerticalStackLayout Spacing="2" Padding="0,8,0,8" BackgroundColor="Transparent">
+                        <Label Text="{Binding Speaker}"
+                               FontAttributes="Bold"
+                               FontSize="14"
+                               VerticalOptions="Center" />
+                        <Label Text="{Binding MessageText}"
+                               FontSize="14"
+                               TextColor="Black"
+                               LineBreakMode="WordWrap"
+                               VerticalOptions="Start" />
+                    </VerticalStackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+
+        <!-- BOTTOM BAR (unchanged) -->
+        <Grid Grid.Row="2"
+              BackgroundColor="White"
+              Padding="16"
+              ColumnDefinitions="Auto, *, Auto"
+              HeightRequest="60"
+              VerticalOptions="Center">
+            <HorizontalStackLayout Grid.Column="0"
+                                   VerticalOptions="Center"
+                                   Spacing="16">
+                <Button Text="Live"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        TextColor="#3B82F6"
+                        VerticalOptions="Center" />
+                <Button Text="SOAP Notes"
+                        FontAttributes="Bold"
+                        BackgroundColor="Transparent"
+                        TextColor="#3B82F6"
+                        VerticalOptions="Center" />
+            </HorizontalStackLayout>
+            <BoxView Grid.Column="1"
+                     HorizontalOptions="FillAndExpand"
+                     VerticalOptions="Center"
+                     Color="Transparent" />
+            <HorizontalStackLayout Grid.Column="2"
+                                   VerticalOptions="Center"
+                                   Spacing="8">
+                <Entry Text="{Binding NewMessageText}"
+                       Placeholder="Type a message..."
+                       VerticalOptions="Center"
+                       WidthRequest="200" />
+                <Button Text="Send"
+                        Command="{Binding SendMessageCommand}"
+                        VerticalOptions="Center"
+                        TextColor="White"
+                        BackgroundColor="#3B82F6" />
+            </HorizontalStackLayout>
+        </Grid>
+
+    </Grid>
+</ContentPage>
