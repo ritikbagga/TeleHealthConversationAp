@@ -14,112 +14,270 @@
     <Grid RowDefinitions="Auto, *, Auto"
           ColumnDefinitions="*"
           Padding="0"
+          Margin="0,0,0,0"
           BackgroundColor="#F9FAFB">
 
-        <!-- TOP SECTION -->
-        <VerticalStackLayout Grid.Row="0"
-                             Padding="16"
-                             BackgroundColor="White"
-                             Spacing="4"
-                             HorizontalOptions="Center"
-                             VerticalOptions="Start">
-            <Label Text="Call with Jonathon Doe"
-                   FontSize="16"
-                   FontAttributes="Bold"
-                   HorizontalOptions="Center" />
+        <!-- TOP SECTION: Header Frame -->
+        <Frame Grid.Row="0" Padding="20" BackgroundColor="White" HasShadow="False" BorderColor="Transparent">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
 
-            <Label Text="PulseBot is recording call..."
-                   FontSize="12"
-                   TextColor="Red"
-                   HorizontalOptions="Center" />
-        </VerticalStackLayout>
+                <!-- PNG icons group on the left -->
+                <HorizontalStackLayout Grid.Column="0" VerticalOptions="Start" Spacing="10">
+                    <Image Source="back_icon.png" WidthRequest="24" HeightRequest="24" />
+                    <Image Source="app_logo.png" WidthRequest="40" HeightRequest="40" />
+                </HorizontalStackLayout>
 
-        <!-- LANGUAGE INDICATOR IN CIRCLE -->
-        <Grid Grid.Row="1">
-            <Frame WidthRequest="200"
-                   HeightRequest="80"
-                   CornerRadius="40"
-                   BorderColor="Gray"
-                   BackgroundColor="White"
-                   Padding="0"
-                   HorizontalOptions="Center"
-                   VerticalOptions="Start"
-                   Margin="0,10,0,0">
-                <VerticalStackLayout HorizontalOptions="Center"
-                                     VerticalOptions="Center">
-                    <Label Text="Patient Language"
-                           FontSize="14"
-                           TextColor="Black"
-                           HorizontalOptions="Center"/>
-                    <Label Text="French"
-                           FontSize="16"
-                           FontAttributes="Bold"
-                           TextColor="Black"
-                           HorizontalOptions="Center"/>
-                </VerticalStackLayout>
-            </Frame>
-        </Grid>
-
-        <!-- MESSAGES AREA -->
-        <CollectionView Grid.Row="1"
-                        ItemsSource="{Binding Messages}"
-                        Margin="16,100,16,0">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <VerticalStackLayout Spacing="2" Padding="0,8,0,8" BackgroundColor="Transparent">
-                        <Label Text="{Binding Speaker}"
-                               FontAttributes="Bold"
-                               FontSize="14"
-                               VerticalOptions="Center" />
-                        <Label Text="{Binding MessageText}"
-                               FontSize="14"
-                               TextColor="Black"
-                               LineBreakMode="WordWrap"
-                               VerticalOptions="Start" />
+                <!-- New HorizontalStackLayout to include icons before labels -->
+                <HorizontalStackLayout Grid.Column="1" VerticalOptions="Start" HorizontalOptions="CenterAndExpand" Spacing="8">
+                    <Image Source="phone_outgoing.png" WidthRequest="20" HeightRequest="25" VerticalOptions="Start" />
+                    <!-- Icon before "Call with Jonathon Doe" -->
+                    <VerticalStackLayout Spacing="4">
+                        <Label Text="Call with Jonathon Doe"
+             FontSize="16"
+             FontAttributes="Bold"
+             TextColor="#1C2739"
+             HorizontalOptions="Center" />
+                        <HorizontalStackLayout Spacing="6">
+                            <Image Source="record.png" WidthRequest="16" HeightRequest="16"/>
+                            <!-- Icon before "PulseBot is recording call..." -->
+                            <Label Text="PulseBot is recording call..."
+             FontSize="12"
+             TextColor="#858F98"
+             HorizontalOptions="Center" />
+                        </HorizontalStackLayout>
                     </VerticalStackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                </HorizontalStackLayout>
 
-        <!-- BOTTOM BAR (unchanged) -->
-        <Grid Grid.Row="2"
-              BackgroundColor="White"
-              Padding="16"
-              ColumnDefinitions="Auto, *, Auto"
-              HeightRequest="60"
-              VerticalOptions="Center">
-            <HorizontalStackLayout Grid.Column="0"
-                                   VerticalOptions="Center"
-                                   Spacing="16">
-                <Button Text="Live"
-                        FontAttributes="Bold"
-                        BackgroundColor="Transparent"
-                        TextColor="#3B82F6"
-                        VerticalOptions="Center" />
-                <Button Text="SOAP Notes"
-                        FontAttributes="Bold"
-                        BackgroundColor="Transparent"
-                        TextColor="#3B82F6"
-                        VerticalOptions="Center" />
-            </HorizontalStackLayout>
-            <BoxView Grid.Column="1"
-                     HorizontalOptions="FillAndExpand"
-                     VerticalOptions="Center"
-                     Color="Transparent" />
-            <HorizontalStackLayout Grid.Column="2"
-                                   VerticalOptions="Center"
-                                   Spacing="8">
-                <Entry Text="{Binding NewMessageText}"
-                       Placeholder="Type a message..."
-                       VerticalOptions="Center"
-                       WidthRequest="200" />
-                <Button Text="Send"
-                        Command="{Binding SendMessageCommand}"
-                        VerticalOptions="Center"
-                        TextColor="White"
-                        BackgroundColor="#3B82F6" />
-            </HorizontalStackLayout>
+                <!-- HIPAA Label and Lock Icon -->
+                <HorizontalStackLayout Grid.Column="2" VerticalOptions="Start" Spacing="10">
+                    <Label Text="HIPPA-Secured" 
+             FontSize="14" 
+             TextColor="White" 
+             BackgroundColor="Black"
+             HorizontalOptions="Center"/>
+                    <Image Source="lock.png" WidthRequest="24" HeightRequest="24" />
+                </HorizontalStackLayout>
+            </Grid>
+        </Frame>
+
+        <!-- CONTENT AREA - Contains both language frame and messages -->
+        <Grid Grid.Row="1">
+            <!-- This AbsoluteLayout will keep the language frame fixed -->
+            <AbsoluteLayout>
+                <!-- Patient Language Frame - Fixed at the top -->
+                <Frame AbsoluteLayout.LayoutBounds="0.5, 0, AutoSize, AutoSize" 
+                 AbsoluteLayout.LayoutFlags="PositionProportional"
+                 ZIndex="2"  
+                 Margin="0,10,0,10"
+                 Padding="10"
+                 CornerRadius="30"
+                 BorderColor="#E5E7EB"
+                 BackgroundColor="White"
+                 HasShadow="False">
+                    
+                    <HorizontalStackLayout Spacing="8">
+                        <Image Source="france.png" WidthRequest="40" HeightRequest="40" VerticalOptions="Center"/>
+                        <VerticalStackLayout Spacing="2">
+                            <Label Text="Patient Language" FontSize="12" TextColor="#6B7280"/>
+                            <Label Text="French" FontSize="14" FontAttributes="Bold" TextColor="#1F2937"/>
+                        </VerticalStackLayout>
+                        <Image Source="menu_down.png" WidthRequest="20" HeightRequest="20" VerticalOptions="Center"/>
+                    </HorizontalStackLayout>
+                </Frame>
+            </AbsoluteLayout>
+
+            <!-- ScrollView for messages - Will scroll under the language frame -->
+            <ScrollView Margin="0,60,0,0">
+                <!-- Top margin to make room for language frame -->
+                <VerticalStackLayout Spacing="10" Padding="16,10,16,10">
+                    <!-- Doctor's Message -->
+                    <!-- Frame 1 -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <HorizontalStackLayout>
+                            <Image Source="userimg.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Start" Margin="0,0,10,0"/>
+                            <VerticalStackLayout>
+                                <Label Text="Dr. Smith, PHD" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                                <Label Text="When did you first notice there was a problem?" FontSize="16" TextColor="#1F2937"/>
+                                <Label Text="Quand avez-vous remarqué pour la première fois qu'il y avait un problème ?" FontSize="16" TextColor="#4B5563"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Frame 2 -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <HorizontalStackLayout>
+                            <Image Source="userimg.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Start" Margin="0,0,10,0"/>
+                            <VerticalStackLayout>
+                                <Label Text="Patient" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                                <Label Text="I've been feeling discomfort for a few weeks now." FontSize="16" TextColor="#1F2937"/>
+                                <Label Text="Je ressens de l'inconfort depuis quelques semaines." FontSize="16" TextColor="#4B5563"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Frame 3 -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <HorizontalStackLayout>
+                            <Image Source="userimg.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Start" Margin="0,0,10,0"/>
+                            <VerticalStackLayout>
+                                <Label Text="Dr. Smith, PHD" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                                <Label Text="Have you experienced any other symptoms?" FontSize="16" TextColor="#1F2937"/>
+                                <Label Text="Avez-vous ressenti d'autres symptômes ?" FontSize="16" TextColor="#4B5563"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Frame 4 -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <HorizontalStackLayout>
+                            <Image Source="userimg.png" WidthRequest="30" HeightRequest="30" VerticalOptions="Start" Margin="0,0,10,0"/>
+                            <VerticalStackLayout>
+                                <Label Text="Patient" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                                <Label Text="Yes, I have also had headaches." FontSize="16" TextColor="#1F2937"/>
+                                <Label Text="Oui, j'ai aussi eu des maux de tête." FontSize="16" TextColor="#4B5563"/>
+                            </VerticalStackLayout>
+                        </HorizontalStackLayout>
+                    </Frame>
+
+                    <!-- Live Message -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <VerticalStackLayout>
+                            <Label Text="Live" FontSize="14" FontAttributes="Bold" TextColor="#F43F5E"/>
+                            <Label Text="Non, je n'avais pas rien..." FontSize="16" TextColor="#1F2937"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- Adding more dummy messages to demonstrate scrolling -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <VerticalStackLayout>
+                            <Label Text="Dr. Smith, PHD" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                            <Label Text="That's good. We'll need to do the blood test on an empty stomach. How has your water intake been?" FontSize="16" TextColor="#1F2937"/>
+                            <Label Text="C'est bien. Nous devrons faire l'analyse de sang à jeun. Comment a été votre consommation d'eau ?" FontSize="16" TextColor="#4B5563"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <VerticalStackLayout>
+                            <Label Text="Person 2" FontSize="14" FontAttributes="Bold" TextColor="#FFA726"/>
+                            <Label Text="Normal, I think. I drink water throughout the day." FontSize="16" TextColor="#1F2937"/>
+                            <Label Text="Normal, je pense. Je bois de l'eau tout au long de la journée." FontSize="16" TextColor="#4B5563"/>
+                        </VerticalStackLayout>
+                    </Frame>
+
+                    <!-- More dummy messages -->
+                    <Frame Padding="10" BackgroundColor="White" CornerRadius="10" BorderColor="#E5E7EB" HasShadow="False">
+                        <VerticalStackLayout>
+                            <Label Text="Dr. Smith, PHD" FontSize="14" FontAttributes="Bold" TextColor="#007BFF"/>
+                            <Label Text="Great. Now I'd like to examine the area where you've been experiencing discomfort." FontSize="16" TextColor="#1F2937"/>
+                            <Label Text="Excellent. Maintenant, j'aimerais examiner la zone où vous ressentez de l'inconfort." FontSize="16" TextColor="#4B5563"/>
+                        </VerticalStackLayout>
+                    </Frame>
+                </VerticalStackLayout>
+            </ScrollView>
         </Grid>
+
+        <!-- Bottom Bar: EXACT Layout from the Screenshot with equisized columns -->
+        <Grid Grid.Row="2"
+      BackgroundColor="White"
+      Padding="0"
+      Margin="0"
+      ColumnDefinitions="*,Auto,*"
+      HeightRequest="60"
+      VerticalOptions="CenterAndExpand">
+
+            <!-- Left Column -->
+            <Grid Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- email icon -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- SOAP Notes button -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- record icon -->
+                    <ColumnDefinition Width="*"/>
+                    <!-- recording text -->
+                    <ColumnDefinition Width="Auto"/>
+                    <!-- separator label -->
+                </Grid.ColumnDefinitions>
+
+                <Frame Grid.Column="0"
+       WidthRequest="43"
+       HeightRequest="43"
+       Padding="4"
+       BackgroundColor="White"
+       HasShadow="False"
+       BorderColor="#E8E8EA"
+       Margin="10,0,10,0"
+       VerticalOptions="CenterAndExpand"
+       HorizontalOptions="Center">
+                    <Grid>
+                        <!-- Use Grid to ensure proper centering -->
+                        <Image Source="email.png"
+               WidthRequest="16"
+               HeightRequest="16"
+               VerticalOptions="Center"
+               HorizontalOptions="Center" />
+                    </Grid>
+                </Frame>
+
+
+                <Button Text="SOAP Notes"
+              BackgroundColor="#F2F5F9"
+              TextColor="Navy"
+              CornerRadius="10"
+              FontAttributes="Bold"
+              VerticalOptions="CenterAndExpand"
+              Grid.Column="1"/>
+                <Image Source="record.png"
+             WidthRequest="24"
+             HeightRequest="20"
+             VerticalOptions="CenterAndExpand"
+             Grid.Column="2"/>
+                <Label Text="PulseBot is recording call..."
+             FontSize="12"
+             TextColor="#858F98"
+             VerticalOptions="CenterAndExpand"
+             HorizontalOptions="FillAndExpand"
+             LineBreakMode="TailTruncation"
+             Grid.Column="3"/>
+                <Label Text="|"
+             FontSize="12"
+             TextColor="#858F98"
+             VerticalOptions="CenterAndExpand"
+             Grid.Column="4"/>
+            </Grid>
+
+            <!-- Center Column: Spacer -->
+            <BoxView Grid.Column="1"
+             HorizontalOptions="FillAndExpand"
+             VerticalOptions="CenterAndExpand"
+             Color="Transparent" />
+
+            <!-- Right Column: Audio Wave + Pause Button -->
+            <HorizontalStackLayout Grid.Column="2"
+                           HorizontalOptions="CenterAndExpand"
+                           VerticalOptions="CenterAndExpand"
+                           Spacing="8">
+                <Image Source="audio_wave.png"
+               HeightRequest="60"
+               WidthRequest="200"
+               VerticalOptions="CenterAndExpand" />
+                <Button Text="||"
+                BackgroundColor="#002D62"
+                TextColor="White"
+                CornerRadius="10"
+                FontAttributes="Bold"
+                HorizontalOptions="Center"
+                VerticalOptions="CenterAndExpand" />
+            </HorizontalStackLayout>
+
+        </Grid>
+
 
     </Grid>
 </ContentPage>
